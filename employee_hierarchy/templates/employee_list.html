@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Employee List</h1>
+<form method="get">
+    <label for="ordering">Sort by:</label>
+    <select name="ordering" id="ordering" class="form-control" style="margin-bottom: 10px">
+        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name</option>
+        <option value="position" {% if ordering == 'position' %}selected{% endif %}>Position</option>
+        <option value="hire_date" {% if ordering == 'hire_date' %}selected{% endif %}>Hire Date</option>
+        <option value="email" {% if ordering == 'email' %}selected{% endif %}>Email</option>
+    </select>
+
+    <label for="search">Search:</label>
+    <input name="search" type="text" id="search" class="form-control" style="margin-bottom: 10px"
+           placeholder="Search by any field">
+
+    <button type="submit" class="btn btn-warning" style="margin-bottom: 10px">Apply</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Hire Date</th>
+            <th>Email</th>
+            {% if user.is_authenticated %}
+                <th>Action</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in object_list %}
+        <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.position }}</td>
+            <td>{{ employee.hire_date }}</td>
+            <td>{{ employee.email }}</td>
+            <td>
+                {% if user.is_staff %}
+                    <a href="{% url 'employee_delete' employee.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&ordering={{ ordering }}?query={{ query }}">previous</a>
+        {% endif %}
+        <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&ordering={{ ordering }}?query={{ query }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+<script>
+
+    var search = document.getElementById('search');
+
+    search.addEventListener('input', function() {
+        var query = search.value;
+
+        $.ajax({
+            url: '{% url 'ajax_search' %}',
+            data: {
+                'query': query
+            },
+            dataType: 'json',
+            success: function(data) {
+                $('table tbody').html(data.html);
+            }
+        });
+    });
+</script>
+{% endblock %}

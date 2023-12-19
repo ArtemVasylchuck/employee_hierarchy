@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Employee Hierarchy</h1>
+    <ul>
+        {% for employee in object_list %}
+            {% include 'employee_item.html' with employee=employee load_on_demand=True %}
+        {% endfor %}
+    </ul>
+
+<script>
+    var treeview = document.querySelector('ul');
+
+    treeview.addEventListener('click', function(event) {
+        var target = event.target;
+        if (target.tagName == 'LI') {
+            var childList = target.querySelector('ol');
+            var url = "ajax_load_subordinates";
+
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: function(data) {
+                    childList.outerHTML = data.html;
+                }
+            });
+
+        }
+    });
+</script>
+{% endblock %}
