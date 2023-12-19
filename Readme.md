@@ -27,10 +27,13 @@
 
 - Для запуску цього проекту вам потрібно мати Python 3.8 або вище та pip.
 - Склонуйте цей репозиторій за допомогою команди `git clone https://github.com/ArtemVasylchuck/employee_hierarchy.git`.
-- Перейдіть до папки проекту за допомогою команди `cd employeeHierarchy`.
+- Перейдіть до папки проекту за допомогою команди `cd employee_hierarchy`.
 - Створіть віртуальне середовище за допомогою команди `pip install -r requirements.txt`.
 - Створіть базу даних за допомогою команд `python manage.py makemigrations` та `python manage.py migrate`.
 - Заповніть базу даних випадковими даними про співробітників за допомогою команди `python manage.py seed_employees <кількість>`.
 - Запустіть сервер за допомогою команди `python manage.py runserver`.
 - Відкрийте браузер і перейдіть за адресою http://localhost:8000/.
+-  - /list - для списку робітників
+   - /hierarchy - для їєрархії співробнітників
+   - /account/login - для авторизації
 - Для перевірки авторизації користувачів скористуйтеся командою `python manage.py createsuperuser` та виконайте авторизацію на сайті
