@@ -9,7 +9,7 @@
 - Наявна можливість сгенерувати будь-яку кількість співробітників
 - На сторінці list можна сортувати та шукати співробітників за будь-яким полем.
 - Веб-сайт має автентифікацію користувача, яка дозволяє видаляти співробітників.
-- 
+  
 - Коли користувач авторизований:
 - ![image](https://github.com/ArtemVasylchuck/employee_hierarchy/assets/93206845/7b0ea3d4-39be-4646-a0d4-b3d8b8a13a6f)
 - ![image](https://github.com/ArtemVasylchuck/employee_hierarchy/assets/93206845/f00ac27e-d153-4f40-b1df-2b14f893216f)
