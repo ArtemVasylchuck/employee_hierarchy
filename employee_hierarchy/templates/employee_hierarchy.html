@@ -1,30 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Employee Hierarchy</h1>
-    <ul>
+    <ul id="employee">
         {% for employee in object_list %}
-            {% include 'employee_item.html' with employee=employee load_on_demand=True %}
+            {% if employee.manager == None %}
+                <li value={{ employee.id }}>
+                    {{ employee.name }} ({{ employee.position }} {{ employee.id }}
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
 
 <script>
-    var treeview = document.querySelector('ul');
+    var treeview = document.getElementById("employee")
 
     treeview.addEventListener('click', function(event) {
         var target = event.target;
-        if (target.tagName == 'LI') {
-            var childList = target.querySelector('ol');
-            var url = "ajax_load_subordinates";
+            if (!target.classList.contains("selected")) {
+                var employeeID = target.getAttribute('value')
 
-            $.ajax({
-                url: url,
-                dataType: 'json',
-                success: function(data) {
-                    childList.outerHTML = data.html;
+                var url = "ajax/load-subordinates/" + employeeID;
+
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        target.insertAdjacentHTML("beforeend", data.html)
+                        target.classList.add("selected")
+
+                    }
+                });
+
+            } else {
+                for(let i = 0; i < target.childElementCount; i++){
+                    target.children[i].remove()
+                    i--;
                 }
-            });
-
-        }
+                target.classList.remove("selected")
+            }
     });
 </script>
 {% endblock %}

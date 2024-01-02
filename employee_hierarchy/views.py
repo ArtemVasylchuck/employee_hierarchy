@@ -48,7 +48,8 @@ def ajax_search(request):
 
 def ajax_load_subordinates(request, employee_id):
     employee = Employee.objects.get(id=employee_id)
-    subordinates = employee.subordinates.all()
+    subordinates = Employee.objects.filter(manager_id=employee_id)
+
     html = render_to_string('employee_item.html',
                             {'employee': employee, 'subordinates': subordinates, 'load_on_demand': True})
 
